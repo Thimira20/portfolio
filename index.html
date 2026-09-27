@@ -21,8 +21,12 @@
   
   <!-- Stylesheets -->
   <link rel="stylesheet" href="./css/style.css">
+  <link rel="stylesheet" href="./css/enhance.css">
 </head>
 <body>
+
+  <!-- Scroll Progress Meter -->
+  <div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
 
   <!-- Background Ambient Glows & Interactive Canvas -->
   <canvas id="cyber-canvas"></canvas>
@@ -61,6 +65,9 @@
 
   <!-- Hero Section -->
   <section class="hero-section" id="hero">
+    <!-- 3D Binary Rain Field -->
+    <canvas id="binary-rain" class="binary-rain-canvas" aria-hidden="true"></canvas>
+
     <div class="container">
       <div class="hero-grid">
         <div class="hero-content">
@@ -108,9 +115,25 @@
             <div class="telemetry-tag tag-top">CIPHER: AES-256-GCM</div>
             <div class="telemetry-tag tag-bottom">STATUS: ACTIVE // CE_UG</div>
 
+            <!-- Parallax depth planes -->
+            <div class="frame-depth-layer depth-halo" aria-hidden="true"></div>
+            <div class="frame-depth-layer depth-grid" aria-hidden="true"></div>
+
             <div class="frame-image-wrapper">
               <img src="./thimir-opt.png" alt="T.N. Panditha" class="frame-image">
               <div class="scan-line"></div>
+              <div class="face-scan-wash" aria-hidden="true"></div>
+              <div class="ir-speckle" aria-hidden="true"></div>
+              <canvas id="face-mesh" class="face-mesh-canvas" aria-hidden="true"></canvas>
+            </div>
+
+            <div class="frame-glare" aria-hidden="true"></div>
+
+            <!-- Biometric HUD readout -->
+            <div class="face-readout" id="face-readout" aria-hidden="true">
+              <span class="fr-dot"></span>
+              <span class="fr-status">FACE ID · STANDBY</span>
+              <span class="fr-match">--.--%</span>
             </div>
           </div>
         </div>
@@ -462,5 +485,7 @@
   <script src="./js/data.js"></script>
   <script src="./js/terminal.js"></script>
   <script src="./js/main.js"></script>
+  <script src="./js/hero-fx.js"></script>
+  <script src="./js/motion.js"></script>
 </body>
 </html>

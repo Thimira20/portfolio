@@ -29,7 +29,12 @@ function initCyberCanvas() {
     height = canvas.height = window.innerHeight;
   });
 
-  const nodeCount = Math.min(Math.floor((width * height) / 18000), 75);
+  // Back off on touch devices and honour reduced-motion: the hero binary rain
+  // already carries the visual load, and this mesh is O(n^2) per frame.
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const coarsePointer = window.matchMedia('(pointer: coarse)').matches;
+  const nodeCap = coarsePointer ? 34 : 75;
+  const nodeCount = Math.min(Math.floor((width * height) / 18000), nodeCap);
   const nodes = [];
 
   for (let i = 0; i < nodeCount; i++) {
@@ -105,7 +110,17 @@ function initCyberCanvas() {
       ctx.shadowBlur = 0;
     }
 
-    requestAnimationFrame(draw);
+    if (!reducedMotion && !document.hidden) {
+      requestAnimationFrame(draw);
+    } else if (reducedMotion) {
+      return;
+    } else {
+      // Tab hidden: idle until it comes back rather than burning frames.
+      document.addEventListener('visibilitychange', function resume() {
+        document.removeEventListener('visibilitychange', resume);
+        requestAnimationFrame(draw);
+      });
+    }
   }
 
   draw();
